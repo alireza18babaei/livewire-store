@@ -1,0 +1,54 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class Product extends Model
+{
+    use softDeletes;
+
+    protected $table = 'products';
+    protected $fillable = [
+        'name',
+        'e_name',
+        'price',
+        'main_price',
+        'discount',
+        'count',
+        'max_sell',
+        'viewed',
+        'sold',
+        'slug',
+        'primary_image',
+        'description',
+        'status',
+        'category_id',
+        'brand_id'
+    ];
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function brand(): BelongsTo
+    {
+        return $this->belongsTo(Brand::class);
+    }
+
+    public function colors(): BelongsToMany
+    {
+        return $this->belongsToMany(Color::class, 'color_product');
+    }
+
+    public function guaranties(): BelongsToMany
+    {
+        return $this->belongsToMany(Guaranty::class, 'guaranty_product');
+    }
+
+
+}

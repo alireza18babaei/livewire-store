@@ -1,0 +1,93 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class Category extends Model
+{
+    /** @use HasFactory<\Database\Factories\CategoryFactory> */
+    use HasFactory;
+    use SoftDeletes;
+
+    protected $table = 'categories';
+    protected $fillable = [
+        'name',
+        'slug',
+        'image',
+        'status',
+        'parent_id',
+    ];
+
+    public function products(): HasMany
+    {
+        return $this->hasMany(Product::class);
+    }
+
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo(self::class, 'parent_id', 'id')
+            ->withDefault(['name' => 'دسته‌بندی اصلی']);
+    }
+
+    public function child(): HasMany
+    {
+        return $this->hasMany(self::class, 'parent_id', 'id');
+    }
+
+    public static function getCategories()
+    {
+        $array = [];
+        $categories = self::query()
+            ->with('child')
+            ->where('parent_id', null)
+            ->select('id', 'name')
+            ->get();
+        foreach ($categories as $category1) {
+            $array[$category1->id] = ' --- ' . $category1->name . ' --- ';
+            foreach ($category1->child as $category2) {
+                $array[$category2->id] = $category2->name;
+            }
+        }
+        return $array;
+    }
+
+
+
+//    when we cal the method this function extended:
+    public static function boot(): void
+    {
+        parent::boot();
+        self::deleting(static function ($category) {
+            foreach ($category->child()->withTrashed()->get() as $child) {
+                $child->delete();
+            }
+        });
+
+        self::deleting(static function ($category) {
+            foreach ($category->child()->withTrashed()->get() as $child) {
+                $child->delete();
+            }
+        });
+
+        self::forceDeleting(static function ($category) {
+            foreach ($category->child()->withTrashed()->get() as $child) {
+                $child->forceDelete();
+            }
+        });
+
+
+
+        self::restoring(static function ($category) {
+            foreach ($category->child()->withTrashed()->get() as $child) {
+                $child->restore();
+            }
+        });
+
+
+    }
+}
