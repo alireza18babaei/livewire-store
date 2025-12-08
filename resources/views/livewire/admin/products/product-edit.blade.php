@@ -14,23 +14,6 @@
   <form class="space-y-10">
     <div class="space-y-10">
 
-      <div
-        x-data="{ preview: '{{ $product->primary_image ? asset('images/products/'.$product->primary_image) : '' }}' }"
-        class="w-full flex justify-center items-center">
-
-        <label for="ctnFile" class="relative cursor-pointer w-[300px] h-[250px]" aria-label="انتخاب تصویر">
-          <div x-show="!preview" class="absolute inset-0 flex items-center justify-center">
-            <x-icons.image size="30" class="text-gray-400"/>
-          </div>
-          <img :src="preview" width="300" height="250"
-            class="border w-full h-full border-gray-300 rounded-md bg-contain"
-            loading="lazy" decoding="async">
-          <input id="ctnFile" type="file" wire:model="primary_image"
-            @change="preview = URL.createObjectURL($event.target.files[0])"
-            class="sr-only">
-          @error('primary_image') <p class="text-danger mt-1">{{ $message }}</p> @enderror
-        </label>
-      </div>
 
       <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 py-4">
         <div>
@@ -46,54 +29,37 @@
         </div>
 
         <div>
-          <label for="prise">قیمت</label>
-          <input wire:model="main_price" id="price" type="text" class="form-input">
-          @error('price') <p class="text-danger mt-1">{{ $message }}</p> @enderror
+          <div wire:ignore>
+            <label for="max_sell">دسته‌بندی</label>
+            <select wire:model="category_id" id="brand-select">
+              @foreach($categories as $key=>$value)
+                <option {{$this->category_id == $key ? 'selected' : ''}}
+                value="{{$key}}">{{$value}}</option>
+              @endforeach
+            </select>
+          </div>
+          @error('category_id') <p class="text-danger mt-1">{{ $message }}</p> @enderror
         </div>
 
         <div>
-          <label for="discount">درصد تخفیف</label>
-          <input wire:model="discount" id="discount" type="text" class="form-input">
-          @error('discount') <p class="text-danger mt-1">{{ $message }}</p> @enderror
-        </div>
-
-        <div>
-          <label for="count">تعداد</label>
-          <input wire:model="count" id="count" type="text" class="form-input">
-          @error('count') <p class="text-danger mt-1">{{ $message }}</p> @enderror
-        </div>
-
-        <div>
-          <label for="max_sell">حداکثر فروش</label>
-          <input wire:model="max_sell" id="max_sell" type="text" class="form-input">
-          @error('max_sell') <p class="text-danger mt-1">{{ $message }}</p> @enderror
-        </div>
-
-        <div wire:ignore>
-          <label for="max_sell">دسته‌بندی</label>
-          <select wire:model="category_id" id="brand-select">
-            @foreach($categories as $key=>$value)
-              <option {{$this->category_id == $key ? 'selected' : ''}}
-              value="{{$key}}">{{$value}}</option>
-            @endforeach
-          </select>
-        </div>
-
-        <div wire:ignore>
-          <label for="max_sell">برند</label>
-          <select wire:model="brand_id" id="category-select">
-            @foreach($brands as $key=>$value)
-              <option {{$this->brand_id == $key ? 'selected' : ''}}
-              value="{{$key}}">{{$value}}</option>
-            @endforeach
-          </select>
+          <div wire:ignore>
+            <label for="max_sell">برند</label>
+            <select wire:model="brand_id" id="category-select">
+              @foreach($brands as $key=>$value)
+                <option {{$this->brand_id == $key ? 'selected' : ''}}
+                value="{{$key}}">{{$value}}</option>
+              @endforeach
+            </select>
+          </div>
+          @error('brand_id') <p class="text-danger mt-1">{{ $message }}</p> @enderror
         </div>
 
         <div>
           <label for="status">وضعیت</label>
           <select wire:model="status" id="status" class="form-select text-white-dark">
             @foreach($products_status as $status)
-              <option value="{{ $status->value }}">{{ __("enums.$status->value") }}</option>
+              <option value="{{ $status->value }}" {{$this->status == $status->value  ? 'selected' : ''}}>
+                {{ __("enums.$status->value") }}</option>
             @endforeach
           </select>
           @error('status') <p class="text-danger mt-1">{{ $message }}</p> @enderror

@@ -7,10 +7,10 @@
         <a href="index.html"
           class="flex items-center main-logo shrink-0">
           <img class="ml-[5px] w-8 flex-none"
-            src="{{ asset('panel/images/logo.svg') }}"
+            src="{{ asset('panel/images/logo.png') }}"
             alt="image"/>
           <span
-            class="align-middle text-2xl font-semibold ltr:ml-1.5 rtl:mr-1.5 dark:text-white-light lg:inline">IMO</span>
+            class="align-middle text-2xl font-semibold ltr:ml-1.5 rtl:mr-1.5 dark:text-white-light lg:inline">LivewireShop</span>
         </a>
         <a href="javascript:;"
           class="flex items-center w-8 h-8 transition duration-300 rounded-full collapse-icon hover:bg-gray-500/10 rtl:rotate-180 dark:text-white-light dark:hover:bg-dark-light/10"

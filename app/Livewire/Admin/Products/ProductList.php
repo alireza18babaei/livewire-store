@@ -22,7 +22,7 @@ class ProductList extends Component
     #[Computed]
     public function products(): LengthAwarePaginator
     {
-        return Product::query()->with('category', 'brand')->latest()->paginate(10);
+        return Product::query()->with('category', 'brand', 'mainDetails')->latest()->paginate(10);
     }
 
     #[on('destroy_product')]
@@ -36,7 +36,7 @@ class ProductList extends Component
         $this->products = Product::query()
             ->where('name', 'like', '%' . $this->search . '%')
             ->orWhere('description', 'like', '%' . $this->search . '%')
-            ->with('category', 'brand')->paginate(10);
+            ->with('category', 'brand', 'mainDetails')->paginate(10);
     }
 
 
@@ -47,7 +47,7 @@ class ProductList extends Component
             ['label' => 'دسته‌بندی محصولات'],
         ]
 
-        
+
     ])]
 
 

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Color extends Model
@@ -21,5 +22,11 @@ class Color extends Model
     {
         return $this->belongsToMany(Product::class, 'color_product');
     }
+
+    public function ProductDetails(): HasMany
+    {
+        return $this->hasMany(ProductDetails::class);
+    }
+
 
 }

@@ -22,9 +22,22 @@ class TrashCategories extends Component
     {
         return Category::query()
             ->with('parent')
+            ->whereNotNull('parent_id')
             ->onlyTrashed()
-            ->paginate(10);
+            ->paginate(10, ['id', 'name', 'image', 'created_at', 'parent_id'], 'child_page'); // pageName = child_page
     }
+
+    #[computed]
+    public function mainCategories(): PaginatorAlias
+    {
+        return Category::query()
+            ->with('parent')
+            ->whereNull('parent_id')
+            ->onlyTrashed()
+            ->paginate(3, ['*'], 'main_page'); // pageName = main_page
+    }
+
+
 
     #[on('hard_destroy_category')]
     public function hardDestroyRow($category_id): void
@@ -36,6 +49,16 @@ class TrashCategories extends Component
     public function restoreRow($category_id): void
     {
         Category::query()->withTrashed()->findOrFail($category_id)->restore();
+    }
+
+    #[On('restore_main_category')]
+    public function restoreMainRow($main_category_id): void
+    {
+        $category = Category::query()->withTrashed()->findOrFail($main_category_id);
+        $category->restore();
+        foreach ($category->child()->withTrashed()->get() as $child) {
+            $child->restore();
+        }
     }
 
 

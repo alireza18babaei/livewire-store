@@ -42,6 +42,11 @@
       </tbody>
     </table>
   </div>
+  <div class="flex justify-center">
+    <ul class="inline-flex items-center justify-center space-x-1 rtl:space-x-reverse">
+      {{ $this->colors->links('layouts.admin.pagination') }}
+    </ul>
+  </div>
 </div>
 
 
@@ -59,13 +64,27 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 Livewire.dispatch('hard_destroy_color', {color_id: event.color_id})
-                Swal.fire({
-                    title: "حذف انجام شد!",
-                    icon: "success"
-                });
+                // Swal.fire({
+                //     title: "حذف انجام شد!",
+                //     icon: "success"
+                // });
             }
         });
     })
+    Livewire.on('success', (event) => {
+        Swal.fire({
+            title: event.message,
+            icon: "success"
+        });
+    });
+
+    Livewire.on('error', (event) => {
+        Swal.fire({
+            title: event.message,
+            icon: "error"
+        });
+    });
+
 
     Livewire.on('rest_color', (event) => {
         Livewire.dispatch('restore_color', {color_id: event.color_id})

@@ -22,10 +22,10 @@
           <img :src="preview" width="300" height="250"
             class="border w-full h-full border-gray-300 rounded-md bg-contain"
             loading="lazy" decoding="async">
-          <input id="ctnFile" type="file" wire:model="primary_image"
+          <input id="ctnFile" type="file" wire:model="image"
             @change="preview = URL.createObjectURL($event.target.files[0])"
             class="sr-only">
-          @error('primary_image') <p class="text-danger mt-1">{{ $message }}</p> @enderror
+          @error('image') <p class="text-danger mt-1">{{ $message }}</p> @enderror
         </label>
       </div>
 
@@ -43,9 +43,9 @@
         </div>
 
         <div>
-          <label for="prise">قیمت</label>
+          <label for="prise">قیمت اصلی</label>
           <input wire:model="main_price" id="price" type="text" class="form-input">
-          @error('price') <p class="text-danger mt-1">{{ $message }}</p> @enderror
+          @error('main_price') <p class="text-danger mt-1">{{ $message }}</p> @enderror
         </div>
 
         <div>
@@ -66,26 +66,59 @@
           @error('max_sell') <p class="text-danger mt-1">{{ $message }}</p> @enderror
         </div>
 
-        <div wire:ignore>
-          <label for="max_sell">دسته‌بندی</label>
-          <select wire:model="category_id" id="brand-select">
-            <option disabled selected hidden>انتخاب کنید</option>
-            @foreach($categories as $key=>$value)
-              <option value="{{ $key }}">{{ $value }}</option>
-            @endforeach
-          </select>
+        <div>
+          <div wire:ignore>
+            <label for="max_sell">دسته‌بندی</label>
+            <select wire:model="category_id" id="brand-select">
+              <option disabled selected hidden>انتخاب کنید</option>
+              @foreach($categories as $key=>$value)
+                <option value="{{ $key }}">{{ $value }}</option>
+              @endforeach
+            </select>
+          </div>
+          @error('category_id') <p class="text-danger mt-1">{{ $message }}</p> @enderror
         </div>
 
 
-        <div wire:ignore>
-          <label for="max_sell">برند</label>
-          <select wire:model="brand_id" id="category-select">
-            <option disabled selected hidden>انتخاب کنید</option>
-            @foreach($brands as $key=>$value)
-              <option value="{{$key}}">{{$value}}</option>
-            @endforeach
-          </select>
+        <div>
+          <div wire:ignore>
+            <label for="max_sell">برند</label>
+            <select wire:model="brand_id" id="category-select">
+              <option disabled selected hidden>انتخاب کنید</option>
+              @foreach($brands as $key=>$value)
+                <option value="{{$key}}">{{$value}}</option>
+              @endforeach
+            </select>
+          </div>
+          @error('brand_id') <p class="text-danger mt-1">{{ $message }}</p> @enderror
         </div>
+
+        <div>
+          <div wire:ignore>
+            <label for="max_sell">رنگ</label>
+            <select wire:model="color_id" id="color-select">
+              <option disabled selected hidden>انتخاب کنید</option>
+              @foreach($colors as $key=>$value)
+                <option value="{{$key}}">{{$value}}</option>
+              @endforeach
+            </select>
+          </div>
+          @error('color_id') <p class="text-danger mt-1">{{ $message }}</p> @enderror
+        </div>
+
+        <div>
+          <div wire:ignore>
+            <label for="max_sell">گارانتی</label>
+            <select wire:model="guaranty_id" id="guaranty-select">
+              <option disabled selected hidden>انتخاب کنید</option>
+              @foreach($guaranty as $key=>$value)
+                <option value="{{ $key }}">{{ $value }}</option>
+              @endforeach
+            </select>
+          </div>
+          @error('guaranty_id') <p class="text-danger mt-1">{{ $message }}</p> @enderror
+        </div>
+        <div>
 
         <div>
           <label for="status">وضعیت</label>
@@ -127,6 +160,8 @@
     let options = {searchable: true};
     NiceSelect.bind(document.getElementById('brand-select'), options);
     NiceSelect.bind(document.getElementById('category-select'), options);
+    NiceSelect.bind(document.getElementById('color-select'), options);
+    NiceSelect.bind(document.getElementById('guaranty-select'), options);
 
     ClassicEditor
         .create(document.querySelector('#editor'), {

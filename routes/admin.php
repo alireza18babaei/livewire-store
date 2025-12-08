@@ -9,13 +9,15 @@ use App\Livewire\Admin\Colors\TrashColors;
 use App\Livewire\Admin\Guaranties\GuarantyList;
 use App\Livewire\Admin\Guaranties\TrashGuaranty;
 use App\Livewire\Admin\Panel;
-use App\Livewire\Admin\Products\CreateProductPrice;
+use App\Livewire\Admin\Products\CreateProductDetail;
+use App\Livewire\Admin\Products\EditProductDetails;
 use App\Livewire\Admin\Products\ProductCreate;
+use App\Livewire\Admin\Products\ProductDetailsList;
 use App\Livewire\Admin\Products\ProductEdit;
 use App\Livewire\Admin\Products\ProductList;
-use App\Livewire\Admin\Products\ProductPrices;
+use App\Livewire\Admin\Products\TrashProduct;
+use App\Livewire\Admin\Products\TrashProductDetails;
 use App\Livewire\Admin\Users\UserList;
-use App\Livewire\TrashProduct;
 use Illuminate\Support\Facades\Route;
 
 
@@ -57,8 +59,10 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
         Route::get('/create', ProductCreate::class)->name('admin.product.create');
         Route::get('/trashed', TrashProduct::class)->name('admin.product.trashed');
         Route::get('/edit/{product}', ProductEdit::class)->name('admin.product.edit');
-        Route::get('/prices/{product}', ProductPrices::class)->name('admin.product.prices');
-        Route::get('/prices/{product}/create', CreateProductPrice::class)->name('admin.product.prices.create');
+        Route::get('/details/{product}', ProductDetailsList::class)->name('admin.product.details');
+        Route::get('/details/{product}/create', CreateProductDetail::class)->name('admin.product.details.create');
+        Route::get('/details/{product_detail}/edit', EditProductDetails::class)->name('admin.product.details.edit');
+        Route::get('/details/{product}/trashed', TrashProductDetails::class)->name('admin.product-details.trashed');
 
     });
 });

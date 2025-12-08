@@ -4,10 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ProductPrice extends Model
+class ProductDetails extends Model
 {
-    protected $table = 'product_prices';
+
+    use SoftDeletes;
+
+    protected $table = 'product_details';
     protected $fillable = [
         'main_price',
         'price',
@@ -17,6 +21,7 @@ class ProductPrice extends Model
         'viewed',
         'sold',
         'status',
+        'image',
         'product_id',
         'color_id',
         'guaranty_id',
@@ -36,5 +41,4 @@ class ProductPrice extends Model
     {
         return $this->belongsTo(Guaranty::class);
     }
-
 }

@@ -27,7 +27,17 @@ class TrashColors extends Component
     #[on('hard_destroy_color')]
     public function hardDestroyRow($color_id): void
     {
-        Color::query()->withTrashed()->findOrFail($color_id)->forceDelete();
+        try {
+            Color::query()->withTrashed()->findOrFail($color_id)->forceDelete();
+            $this->dispatch('success', message: 'حذف با موفقیت انجام شد.');
+        } catch (\Throwable $e) {
+            if ($e->getcode() == '23000') {
+                $this->dispatch('error', message: 'این رنگ به دلیل داشتن وابستگی قابل حذف نیست.');
+            } else {
+                $this->dispatch('error', message: 'خطایی رخ داده');
+            }
+        }
+
     }
 
     #[on('restore_color')]

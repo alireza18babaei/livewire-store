@@ -12,8 +12,6 @@ use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Mews\Purifier\Facades\Purifier;
-use function discountPercent;
-use function faNumConvert;
 use function makeSlug;
 use function session;
 use function view;
@@ -28,12 +26,6 @@ class ProductEdit extends Component
     public $name;
 
     public $e_name;
-
-    public $main_price;
-
-    public $discount,$count,$max_sell;
-
-    public $primary_image;
 
     public $description;
 
@@ -56,13 +48,10 @@ class ProductEdit extends Component
         $this->product = $product;
         $this->name = $product->name;
         $this->e_name = $product->e_name;
-        $this->main_price = $product->main_price;
-        $this->discount = $product->discount;
-        $this->count = $product->count;
-        $this->max_sell = $product->max_sell;
         $this->category_id = $product->category_id;
         $this->brand_id = $product->brand_id;
         $this->description = $product->description;
+        $this->status = $product->status;
 
 
         $this->categories = Category::query()
@@ -73,34 +62,18 @@ class ProductEdit extends Component
     }
 
 
-    public function updateRow()
+    public function updateRow(): void
     {
         $this->validate([
             'name' => 'required|string|unique:products,name,' . $this->product->id,
             'e_name' => 'required|string|unique:products,e_name,' . $this->product->id,
-            'price' => 'required|integer',
-            'discount' => 'integer',
-            'count' => 'integer',
-            'max_sell' => 'integer',
-            'primary_image' => 'nullable|file|mimes:jpeg,jpg,png,webp',
             'description' => 'required|string',
         ]);
-
-        if ($this->primary_image) {
-            $imageName = $this->primary_image->hashName();
-            $this->primary_image->storeAs('images/products', $imageName, 'public');
-        }
 
         Product::query()->find($this->product->id)->update([
             'name' => $this->name,
             'e_name' => $this->e_name,
-            'price' => faNumConvert(discountPercent($this->main_price, $this->discount)),
-            'main_price' => faNumConvert($this->main_price),
-            'discount' => faNumConvert($this->discount),
-            'count' => faNumConvert($this->count),
-            'max_sell' => faNumConvert($this->max_sell),
             'slug' => makeSlug($this->name, 'Product'),
-            'primary_image' => $this->primary_image ? $imageName : $this->product->primary_image,
             'description' => Purifier::clean($this->description),
             'status' => $this->status ?: $this->product->status,
             'category_id' => $this->category_id,

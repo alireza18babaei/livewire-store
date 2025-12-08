@@ -1,6 +1,8 @@
 <?php
 
 use App\Enums\ProductStatus;
+use App\Models\Color;
+use App\Models\Guaranty;
 use App\Models\Product;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -13,7 +15,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product_prices', function (Blueprint $table) {
+        Schema::create('product_details', function (Blueprint $table) {
             $table->id();
             $table->integer('price')->index();
             $table->integer('main_price')->index();
@@ -22,10 +24,12 @@ return new class extends Migration
             $table->integer('max_sell')->default(0);
             $table->integer('viewed')->default(0);
             $table->integer('sold')->default(0)->index();
+            $table->string('image');
             $table->string('status')->default(ProductStatus::Active->value);
-            $table->foreignIdFor(Product::class)->constrained();
-            $table->unsignedInteger('color_id')->index()->nullable();
-            $table->unsignedInteger('guaranty_id')->index()->nullable();
+            $table->foreignIdFor(Product::class)->constrained()->onDelete('cascade');
+            $table->foreignIdFor(Color::class)->constrained();
+            $table->foreignIdFor(Guaranty::class)->constrained();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -35,6 +39,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_prices');
+        Schema::dropIfExists('product_details');
     }
 };

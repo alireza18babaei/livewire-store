@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Brand extends Model
 {
     use SoftDeletes;
+
     protected $table = 'brands';
     protected $fillable = [
         'name',
@@ -22,4 +23,21 @@ class Brand extends Model
         return $this->hasMany(Product::class);
     }
 
+
+    protected static function booted(): void
+    {
+        static::deleting(static function ($brand) {
+            $brand->products()->chunk(50, function ($products) {
+                foreach ($products as $product) {
+                    $product->delete();
+                }
+            });
+        });
+
+        static::restoring(static function ($brand) {
+            foreach ($brand->products()->withTrashed()->cursor() as $product) {
+                $product->restore();
+            }
+        });
+    }
 }

@@ -20,10 +20,6 @@
           <tr>
             <td>{{ $loop->iteration }}</td>
             <td class="whitespace-nowrap">{{ $guaranty->name }}</td>
-            <td class="whitespace-nowrap text-right flex items-center gap-2">
-              {{ $guaranty->code }}
-              <span class="w-4 h-4 rounded border border-gray-300" style="background-guaranty: {{ $guaranty->code }}"></span>
-            </td>
             <td class="whitespace-nowrap">{{ getJalaliDate($guaranty->created_at) }}</td>
             <td class="border-b border-[#ebedf2] p-3 text-center dark:border-[#191e3a]">
               <button wire:click.prevent="$dispatch('hard_delete_guaranty', { 'guaranty_id' : {{ $guaranty->id }} })"
@@ -42,6 +38,11 @@
       </tbody>
     </table>
   </div>
+  <div class="flex justify-center">
+    <ul class="inline-flex items-center justify-center space-x-1 rtl:space-x-reverse">
+      {{ $this->guaranties->links('layouts.admin.pagination') }}
+    </ul>
+  </div>
 </div>
 
 
@@ -59,13 +60,28 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 Livewire.dispatch('hard_destroy_guaranty', {guaranty_id: event.guaranty_id})
-                Swal.fire({
-                    title: "حذف انجام شد!",
-                    icon: "success"
-                });
+                // Swal.fire({
+                //     title: "حذف انجام شد!",
+                //     icon: "success"
+                // });
             }
         });
     })
+    Livewire.on('success', (event) => {
+        Swal.fire({
+            title: event.message,
+            icon: "success"
+        });
+    });
+
+    Livewire.on('error', (event) => {
+        Swal.fire({
+            title: event.message,
+            icon: "error"
+        });
+    });
+
+
 
     Livewire.on('rest_guaranty', (event) => {
         Livewire.dispatch('restore_guaranty', {guaranty_id: event.guaranty_id})
@@ -74,6 +90,5 @@
             icon: "success"
         });
     })
-
 </script>
 @endscript

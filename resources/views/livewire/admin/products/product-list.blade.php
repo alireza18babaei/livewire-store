@@ -1,3 +1,5 @@
+@php use App\Enums\ProductStatus; @endphp
+
 <div class="panel min-h-screen">
 
   {{--    message--}}
@@ -67,20 +69,26 @@
               <td>{{ $loop->iteration }}</td>
               <td class="whitespace-nowrap">{{ $product->name }}</td>
               <td class="whitespace-nowrap">{{ $product->e_name }}</td>
-              <td class="whitespace-nowrap">{{ number_format($product->price )}}</td>
-              <td class="whitespace-nowrap">{{ number_format($product->discount )}}</td>
-              <td class="whitespace-nowrap">{{ $product->count }}</td>
-              <td class="whitespace-nowrap">{{ $product->max_sell }}</td>
+              <td class="whitespace-nowrap">{{ number_format($product->mainDetails->price )}}</td>
+              <td class="whitespace-nowrap">{{ $product->mainDetails->discount}}</td>
+              <td class="whitespace-nowrap">{{ $product->mainDetails->count }}</td>
+              <td class="whitespace-nowrap">{{ $product->mainDetails->max_sell }}</td>
               <td class="whitespace-nowrap w-[80px] flex items-center justify-center">
-                <img src="{{ asset('images/products/' . $product->primary_image) }}" alt="image"
+                <img src="{{ asset('images/products/' . $product->mainDetails->image) }}" alt="image"
                   class="object-cover w-12 h-12 mb-5 rounded-full">
               </td>
               <td class="whitespace-nowrap">{!! clean($product->description) !!}</td>
-              <td class="whitespace-nowrap">{{ __("enums.$product->status") }}</td>
-              <td class="whitespace-nowrap">{{ $product->category->name }}</td>
-              <td class="whitespace-nowrap">{{ $product->brand->name }}</td>
               <td class="whitespace-nowrap">
-                <a href="{{ route('admin.product.prices', $product->id) }}" class="btn btn-outline-info">تنوع قیمت</a>
+                @if($product->status == ProductStatus::Active->value)
+                  <span type="button" class="btn btn-success">فعال</span>
+                @elseif($product->status == ProductStatus::Inactive->value)
+                  <span type="button" class="btn btn-danger">غیرفعال</span>
+                @endif
+              </td>
+              <td class="whitespace-nowrap {{ $product->category?->name ?: 'text-danger' }}">{{ $product->category?->name ?: 'حذف شده' }}</td>
+              <td class="whitespace-nowrap {{ $product->brand?->name ?: 'text-danger' }}">{{ $product->brand?->name ?: 'حذف شده' }}</td>
+              <td class="whitespace-nowrap">
+                <a href="{{ route('admin.product.details', $product->id) }}" class="btn btn-outline-info">تنوع قیمت</a>
               </td>
               <td class="whitespace-nowrap">{{ getJalaliDate($product->created_at) }}</td>
 

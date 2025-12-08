@@ -80,9 +80,6 @@
                 <button wire:click="editRow({{ $user->id }})" type="button" x-tooltip="Edit">
                   <x-icons.edit/>
                 </button>
-                <button type="button" x-tooltip="Delete">
-                  <x-icons.delete/>
-                </button>
               </td>
             </tr>
           @endforeach
