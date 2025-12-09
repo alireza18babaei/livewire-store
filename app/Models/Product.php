@@ -51,6 +51,11 @@ class Product extends Model
         return $this->belongsToMany(Guaranty::class, 'guaranty_product');
     }
 
+    public function categoryAttribute(): BelongsTo
+    {
+        return $this->belongsTo(CategoryAttribute::class);
+    }
+
     public function mainDetails(): HasOne
     {
         return $this->hasOne(ProductDetails::class)

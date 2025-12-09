@@ -2,6 +2,7 @@
 
 use App\Livewire\Admin\Brands\BrandList;
 use App\Livewire\Admin\Brands\TrashBrands;
+use App\Livewire\Admin\Categories\CategoryAttributes;
 use App\Livewire\Admin\Categories\CategoryList;
 use App\Livewire\Admin\Categories\TrashCategories;
 use App\Livewire\Admin\Colors\ColorList;
@@ -31,6 +32,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::group(['prefix' => 'categories'], function () {
         Route::get('/', CategoryList::class)->name('admin.categories.list');
         Route::get('/trashed', TrashCategories::class)->name('admin.categories.trashed.list');
+        Route::get('/{category}/attribute', CategoryAttributes::class)->name('admin.categories.attribute.list');
     });
 
 //    brands

@@ -20,8 +20,8 @@ return new class extends Migration {
             $table->string('slug')->unique();
             $table->string('status')->default(ProductStatus::Active->value);
             $table->string('description');
-            $table->foreignIdFor(Category::class)->constrained()->onDelete('cascade');
-            $table->foreignIdFor(Brand::class)->constrained()->onDelete('cascade');
+            $table->foreignIdFor(Category::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Brand::class)->constrained()->cascadeOnDelete();
             $table->softDeletes();
             $table->timestamps();
         });

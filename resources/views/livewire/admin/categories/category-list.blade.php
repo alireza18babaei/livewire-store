@@ -84,6 +84,7 @@
             <th>ردیف</th>
             <th>نام دسته‌بندی</th>
             <th>عکس</th>
+            <th>ویژگی‌ها</th>
             <th>دسته‌بندی والد</th>
             <th>تاریخ دسته‌بندی</th>
             <th class="text-center">عملیات</th>
@@ -94,10 +95,19 @@
             <tr>
               <td>{{ $loop->iteration }}</td>
               <td class="whitespace-nowrap">{{ $category->name }}</td>
-              <td class="whitespace-nowrap flex items-center justify-center">
-                <img src="{{ asset('images/categories/' . $category->image) }}" alt="image"
-                  class="object-cover w-12 h-12 mb-5 rounded-full">
+              <td class="whitespace-nowrap">
+                <div class="flex items-center justify-center">
+                  <img src="{{ asset('images/categories/' . $category->image) }}" alt="image"
+                    class="object-cover w-12 h-12 rounded-full">
+                </div>
               </td>
+
+              <td class="whitespace-nowrap">
+                <div class="flex justify-center">
+                  <a href="{{ route('admin.categories.attribute.list', $category->id) }}"
+                    class="btn btn-outline-info w-20">ویژگی‌ها</a></div>
+              </td>
+
               <td class="whitespace-nowrap">{{ $category->parent->name}}</td>
               <td class="whitespace-nowrap">{{ getJalaliDate($category->created_at) }}</td>
               <td class="border-b border-[#ebedf2] p-3 text-center dark:border-[#191e3a]">
