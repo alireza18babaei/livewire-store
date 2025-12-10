@@ -14,7 +14,7 @@ class CategorySeeder extends Seeder
 
         $mainCount = 10;
 
-        $subCount = 5;
+        $subCount = 3;
         $categoryAttribute = 3;
 
         for ($i = 1; $i <= $mainCount; $i++) {
@@ -33,15 +33,15 @@ class CategorySeeder extends Seeder
                     'parent_id' => $parent->id,
                     'image' => 'default.jpg',
                 ]);
+                for ($t = 1; $t <= $categoryAttribute; $t++) {
+                    CategoryAttribute::query()->create([
+                        'name' => "ویژگی $t",
+                        'category_id' => $child->id,
+                    ]);
+                }
             }
         }
 
-        for ($t = 1; $t <= $categoryAttribute; $t++) {
-            CategoryAttribute::query()->create([
-                'name' => "ویژگی $t",
-                'category_id' => $child->id,
-            ]);
-        }
 
 
     }

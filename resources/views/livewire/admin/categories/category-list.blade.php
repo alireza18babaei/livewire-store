@@ -63,7 +63,9 @@
           <span class="absolute inset-y-0 right-2 grid w-8 place-content-center">
             <button type="submit" aria-label="Submit"
               class="rounded-full p-1.5 text-gray-700 transition-colors hover:bg-gray-100">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"></path></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="size-4"><path stroke-linecap="round" stroke-linejoin="round"
+                  d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"></path></svg>
             </button>
           </span>
         </div>
@@ -101,13 +103,15 @@
                     class="object-cover w-12 h-12 rounded-full">
                 </div>
               </td>
-
-              <td class="whitespace-nowrap">
-                <div class="flex justify-center">
-                  <a href="{{ route('admin.categories.attribute.list', $category->id) }}"
-                    class="btn btn-outline-info w-20">ویژگی‌ها</a></div>
-              </td>
-
+              @if($category->parent_id)
+                <td class="whitespace-nowrap">
+                  <div class="flex justify-center">
+                    <a href="{{ route('admin.categories.attribute.list', $category->id) }}"
+                      class="btn btn-outline-info w-20">ویژگی‌ها</a></div>
+                </td>
+              @else
+                <td></td>
+              @endif
               <td class="whitespace-nowrap">{{ $category->parent->name}}</td>
               <td class="whitespace-nowrap">{{ getJalaliDate($category->created_at) }}</td>
               <td class="border-b border-[#ebedf2] p-3 text-center dark:border-[#191e3a]">

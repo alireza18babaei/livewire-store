@@ -48,18 +48,19 @@
           <tr>
             <th>ردیف</th>
             <th>نام محصول</th>
-            <th>product name</th>
+{{--            <th>product name</th>--}}
             <th>قیمت</th>
             <th>درصد تخفیف</th>
             <th>تعداد</th>
             <th>حداکثر فروش</th>
             <th>عکس</th>
-            <th>توضیحات</th>
+{{--            <th>توضیحات</th>--}}
             <th>وضعیت</th>
             <th>دسته‌بندی</th>
             <th>برند</th>
             <th>تنوع قیمت</th>
-            <th>تاریخ ایحاد</th>
+            <th>ویژگی‌ها</th>
+            <th>تاریخ ایجاد</th>
             <th class="text-center">عملیات</th>
           </tr>
         </thead>
@@ -68,7 +69,7 @@
             <tr>
               <td>{{ $loop->iteration }}</td>
               <td class="whitespace-nowrap">{{ $product->name }}</td>
-              <td class="whitespace-nowrap">{{ $product->e_name }}</td>
+{{--              <td class="whitespace-nowrap">{{ $product->e_name }}</td>--}}
               <td class="whitespace-nowrap">{{ number_format($product->mainDetails->price )}}</td>
               <td class="whitespace-nowrap">{{ $product->mainDetails->discount}}</td>
               <td class="whitespace-nowrap">{{ $product->mainDetails->count }}</td>
@@ -77,7 +78,7 @@
                 <img src="{{ asset('images/products/' . $product->mainDetails->image) }}" alt="image"
                   class="object-cover w-12 h-12 mb-5 rounded-full">
               </td>
-              <td class="whitespace-nowrap">{!! clean($product->description) !!}</td>
+{{--              <td class="whitespace-nowrap">{!! clean($product->description) !!}</td>--}}
               <td class="whitespace-nowrap">
                 @if($product->status == ProductStatus::Active->value)
                   <span type="button" class="btn btn-success">فعال</span>
@@ -89,6 +90,9 @@
               <td class="whitespace-nowrap {{ $product->brand?->name ?: 'text-danger' }}">{{ $product->brand?->name ?: 'حذف شده' }}</td>
               <td class="whitespace-nowrap">
                 <a href="{{ route('admin.product.details', $product->id) }}" class="btn btn-outline-info">تنوع قیمت</a>
+              </td>
+              <td class="whitespace-nowrap">
+                <a href="{{ route('admin.product.properties', $product->id) }}" class="btn btn-outline-info">ویژگی محصول</a>
               </td>
               <td class="whitespace-nowrap">{{ getJalaliDate($product->created_at) }}</td>
 

@@ -16,6 +16,7 @@ use App\Livewire\Admin\Products\ProductCreate;
 use App\Livewire\Admin\Products\ProductDetailsList;
 use App\Livewire\Admin\Products\ProductEdit;
 use App\Livewire\Admin\Products\ProductList;
+use App\Livewire\Admin\Products\ProductProperties;
 use App\Livewire\Admin\Products\TrashProduct;
 use App\Livewire\Admin\Products\TrashProductDetails;
 use App\Livewire\Admin\Users\UserList;
@@ -63,6 +64,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
         Route::get('/create', ProductCreate::class)->name('admin.product.create');
         Route::get('/trashed', TrashProduct::class)->name('admin.product.trashed');
         Route::get('/edit/{product}', ProductEdit::class)->name('admin.product.edit');
+        Route::get('/properties/{product}', ProductProperties::class)->name('admin.product.properties');
         Route::get('/details/{product}', ProductDetailsList::class)->name('admin.product.details');
         Route::get('/details/{product}/create', CreateProductDetail::class)->name('admin.product.details.create');
         Route::get('/details/{product_detail}/edit', EditProductDetails::class)->name('admin.product.details.edit');

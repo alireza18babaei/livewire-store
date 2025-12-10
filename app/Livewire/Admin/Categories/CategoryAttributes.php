@@ -69,7 +69,9 @@ class CategoryAttributes extends Component
     #[Computed]
     public function Attributes(): PaginatorAlias
     {
-        return CategoryAttribute::query()->latest()->paginate(10);
+        return CategoryAttribute::query()
+            ->where('category_id', $this->category->id)
+            ->latest()->paginate(10);
     }
 
     #[on('destroy_attribute')]
