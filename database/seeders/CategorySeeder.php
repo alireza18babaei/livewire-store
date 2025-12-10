@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
+use App\Models\CategoryAttribute;
 use Illuminate\Database\Seeder;
 use function makeSlug;
 
@@ -14,22 +15,19 @@ class CategorySeeder extends Seeder
         $mainCount = 10;
 
         $subCount = 5;
+        $categoryAttribute = 3;
 
         for ($i = 1; $i <= $mainCount; $i++) {
-
             $parentName = "دسته اصلی $i";
-
-            $parent = Category::create([
+            $parent = Category::query()->create([
                 'name' => $parentName,
                 'slug' => makeSlug($parentName, 'Category'),
                 'image' => 'default.jpg',
             ]);
 
             for ($j = 1; $j <= $subCount; $j++) {
-
                 $childName = "زیر دسته $i-$j";
-
-                Category::create([
+                $child = Category::query()->create([
                     'name' => $childName,
                     'slug' => makeSlug($childName, 'Category'),
                     'parent_id' => $parent->id,
@@ -37,5 +35,14 @@ class CategorySeeder extends Seeder
                 ]);
             }
         }
+
+        for ($t = 1; $t <= $categoryAttribute; $t++) {
+            CategoryAttribute::query()->create([
+                'name' => "ویژگی $t",
+                'category_id' => $child->id,
+            ]);
+        }
+
+
     }
 }

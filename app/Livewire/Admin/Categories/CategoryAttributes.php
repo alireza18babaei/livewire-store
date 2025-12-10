@@ -63,7 +63,7 @@ class CategoryAttributes extends Component
         ]);
 
         session()->flash('success', 'تغییرات با موفقیت اعمال شد!');
-        $this->reset();
+        $this->reset('editIndex');
     }
 
     #[Computed]

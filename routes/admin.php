@@ -19,6 +19,7 @@ use App\Livewire\Admin\Products\ProductList;
 use App\Livewire\Admin\Products\TrashProduct;
 use App\Livewire\Admin\Products\TrashProductDetails;
 use App\Livewire\Admin\Users\UserList;
+use App\Livewire\CategoryAttributesTrashed;
 use Illuminate\Support\Facades\Route;
 
 
@@ -33,6 +34,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
         Route::get('/', CategoryList::class)->name('admin.categories.list');
         Route::get('/trashed', TrashCategories::class)->name('admin.categories.trashed.list');
         Route::get('/{category}/attribute', CategoryAttributes::class)->name('admin.categories.attribute.list');
+        Route::get('/{category}/attribute/trashed', CategoryAttributesTrashed::class)->name('admin.categories.attribute.trashed.list');
     });
 
 //    brands

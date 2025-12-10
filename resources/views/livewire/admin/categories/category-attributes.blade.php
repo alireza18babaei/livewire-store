@@ -29,7 +29,7 @@
           </div>
         </form>
         <div>
-          <a href="{{ route('admin.categories.trashed.list') }}"
+          <a href="{{ route('admin.categories.attribute.trashed.list', $this->category->id) }}"
             class="btn btn-danger  flex items-end justify-center gap-2 w-[300px]">
             <x-icons.trash/>
             ویژگی‌های حذف شده
