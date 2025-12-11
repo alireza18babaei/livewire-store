@@ -55,6 +55,10 @@ class Product extends Model
     {
         return $this->belongsTo(CategoryAttribute::class);
     }
+    public function properties(): HasMany
+    {
+        return $this->hasMany(ProductProperty::class);
+    }
 
     public function mainDetails(): HasOne
     {

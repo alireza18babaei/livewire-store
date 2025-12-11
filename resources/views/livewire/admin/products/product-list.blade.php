@@ -92,7 +92,7 @@
                 <a href="{{ route('admin.product.details', $product->id) }}" class="btn btn-outline-info">تنوع قیمت</a>
               </td>
               <td class="whitespace-nowrap">
-                <a href="{{ route('admin.product.properties', $product->id) }}" class="btn btn-outline-info">ویژگی محصول</a>
+                <a href="{{ route('admin.product.properties', $product->id) }}" class="btn btn-outline-secondary">ویژگی محصول</a>
               </td>
               <td class="whitespace-nowrap">{{ getJalaliDate($product->created_at) }}</td>
 

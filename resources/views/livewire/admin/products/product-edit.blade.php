@@ -30,8 +30,8 @@
 
         <div>
           <div wire:ignore>
-            <label for="max_sell">دسته‌بندی</label>
-            <select wire:model="category_id" id="brand-select">
+            <label for="category-select">دسته‌بندی</label>
+            <select wire:model="category_id" id="category-select">
               @foreach($categories as $key=>$value)
                 <option {{$this->category_id == $key ? 'selected' : ''}}
                 value="{{$key}}">{{$value}}</option>
@@ -43,8 +43,8 @@
 
         <div>
           <div wire:ignore>
-            <label for="max_sell">برند</label>
-            <select wire:model="brand_id" id="category-select">
+            <label for="brand-select">برند</label>
+            <select wire:model="brand_id" id="brand-select">
               @foreach($brands as $key=>$value)
                 <option {{$this->brand_id == $key ? 'selected' : ''}}
                 value="{{$key}}">{{$value}}</option>

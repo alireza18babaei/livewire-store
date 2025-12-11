@@ -41,7 +41,7 @@ class CategoryAttributes extends Component
         ]);
 
         session()->flash('success', 'ویژگی دسته بندی با موفقیت ایجاد شد.');
-        $this->reset(['editIndex', 'name']);
+        $this->reset(['name']);
     }
 
     public function editRow($id): void

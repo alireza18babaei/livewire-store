@@ -209,8 +209,8 @@ return [
         'expiration_date'=>'تاریخ انقضا',
         'code'=>'کد',
 
-
-        'edit_name' => 'نام'
-
+//        -----------------------
+        'edit_name' => 'نام',
+        'category_attribute_id' => 'ویژگی دسته بندی',
     ],
 ];
