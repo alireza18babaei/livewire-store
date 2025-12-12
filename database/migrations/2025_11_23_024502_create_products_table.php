@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->string('name')->index();
             $table->string('e_name')->index();
             $table->string('slug')->unique();
+            $table->string('primary_image');
             $table->string('status')->default(ProductStatus::Active->value);
             $table->string('description');
             $table->foreignIdFor(Category::class)->constrained()->cascadeOnDelete();

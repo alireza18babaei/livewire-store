@@ -30,7 +30,6 @@ class EditProductDetails extends Component
 
     public $discount, $count, $max_sell;
 
-    public $image;
 
     public $description;
 
@@ -74,7 +73,6 @@ class EditProductDetails extends Component
             'discount' => 'integer',
             'count' => 'required',
             'max_sell' => 'required',
-            'image' => 'nullable|file|mimes:jpeg,jpg,png,webp',
         ]);
 
         $discount = faNumConvert($this->discount);
@@ -85,10 +83,6 @@ class EditProductDetails extends Component
             ]);
         }
 
-        if ($this->image) {
-            $imageName = $this->image->hashName();
-            $this->image->storeAs('images/products', $imageName, 'public');
-        }
 
         ProductDetails::query()->find($this->product_detail->id)->update([
             'price' => faNumConvert(discountPercent($main_price, $discount)),
@@ -96,7 +90,6 @@ class EditProductDetails extends Component
             'discount' => faNumConvert($discount),
             'count' => faNumConvert($this->count),
             'max_sell' => faNumConvert($this->max_sell),
-            'image' => $this->image ? $imageName : $this->product_detail->image,
             'status' => $this->status ?: $this->product_detail->status,
             'guaranty_id' => $this->guaranty_id,
             'color_id' => $this->color_id,

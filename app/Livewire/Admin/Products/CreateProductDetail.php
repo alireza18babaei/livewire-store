@@ -28,9 +28,6 @@ class CreateProductDetail extends Component
 
     public $guaranty_id;
 
-    #[Validate('required|file|mimes:jpeg,jpg,png')]
-    public $image;
-
     public Product $product;
     public $status;
     public $search;
@@ -58,11 +55,6 @@ class CreateProductDetail extends Component
             ]);
         }
 
-        if ($this->image) {
-            $imageName = $this->image->hashName();
-            $this->image->storeAs('images/products', $imageName, 'public');
-        }
-
         $exist = ProductDetails::query()
             ->where('color_id', $this->color_id)
             ->where('guaranty_id', $this->guaranty_id)
@@ -78,7 +70,6 @@ class CreateProductDetail extends Component
                 'count' => faNumConvert($this->count),
                 'max_sell' => faNumConvert($this->max_sell),
                 'status' => $this->status ?: ProductStatus::Active->value,
-                'image' => $imageName,
                 'product_id' => $this->product->id,
                 'color_id' => $this->color_id,
                 'guaranty_id' => $this->guaranty_id,

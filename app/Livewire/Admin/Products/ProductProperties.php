@@ -8,6 +8,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use function session;
@@ -45,13 +46,21 @@ class ProductProperties extends Component
     public function productProperties(): LengthAwarePaginator
     {
         return ProductProperty::query()
-            ->whereIn(
-                'category_attribute_id',
-                $this->product->category->categoryAttributes()->pluck('id')->toArray()
-            )
+            ->selectRaw('MAX(id) as id, category_attribute_id')
+            ->with('categoryAttribute')
             ->where('product_id', $this->product->id)
-            ->latest()->paginate(10);
+            ->groupBy('category_attribute_id')
+            ->orderBy('id','desc')
+            ->paginate(10);
+
     }
+
+    #[On("destroy_property_category_attribute")]
+    public function destroyRow($property_category_attribute_id)
+    {
+        ProductProperty::destroy($property_category_attribute_id);
+    }
+
 
     #[Layout('layouts.admin.admin', [
 

@@ -24,7 +24,6 @@
       <thead>
         <tr>
           <th>ردیف</th>
-          <th>عکس</th>
           <th>قیمت</th>
           <th>درصد تخفیف</th>
           <th>تعداد</th>
@@ -40,16 +39,12 @@
         @foreach($this->productDetails as $productDetail)
           <tr>
             <td>{{ $loop->iteration }}</td>
-            <td class="whitespace-nowrap w-[80px] flex items-center justify-center">
-              <img src="{{ asset('images/products/' . $productDetail->image) }}" alt="image"
-                class="object-cover w-12 h-12 mb-5 rounded-full">
-            </td>
             <td class="whitespace-nowrap">{{ number_format($productDetail->price )}}</td>
             <td class="whitespace-nowrap">{{ number_format($productDetail->discount )}}</td>
             <td class="whitespace-nowrap">{{ $productDetail->count }}</td>
             <td class="whitespace-nowrap">{{ $productDetail->max_sell }}</td>
-            <td class="whitespace-nowrap {{ $productDetail->color?->name ?: 'text-danger'}}">{{ $productDetail->color?->name ?: 'حذف شده'}}</td>
-            <td class="whitespace-nowrap {{ $productDetail->guaranty?->name ?: 'text-danger'}}">{{ $productDetail->guaranty?->name ?: 'حذف شده'}}</td>
+            <td class="whitespace-nowrap {{ $productDetail->color?->name ?: 'text-danger'}}">{{ $productDetail->color?->name ?: '--'}}</td>
+            <td class="whitespace-nowrap {{ $productDetail->guaranty?->name ?: 'text-danger'}}">{{ $productDetail->guaranty?->name ?: '--'}}</td>
             <td class="whitespace-nowrap">
               @if($productDetail->status == ProductStatus::Active->value)
                 <span type="button" class="btn btn-success">فعال</span>

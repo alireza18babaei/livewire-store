@@ -9,6 +9,7 @@ use App\Models\Color;
 use App\Models\Guaranty;
 use App\Models\Product;
 use App\Models\ProductDetails;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 use Livewire\Attributes\Layout;
@@ -16,6 +17,7 @@ use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Mews\Purifier\Facades\Purifier;
+use Throwable;
 use function discountPercent;
 use function faNumConvert;
 use function makeSlug;
@@ -32,6 +34,8 @@ class ProductCreate extends Component
     #[Validate('required|string|unique:products,e_name')]
     public $e_name;
 
+    #[Validate('required|file|mimes:jpeg,jpg,png')]
+    public $primary_image;
 
 
     #[Validate('required')]
@@ -41,8 +45,6 @@ class ProductCreate extends Component
     #[Validate('required')]
     public  $discount;
 
-    #[Validate('required|file|mimes:jpeg,jpg,png')]
-    public $image;
 
     #[Validate('required|string')]
     public $description;
@@ -64,7 +66,7 @@ class ProductCreate extends Component
     public $brands;
     public $colors;
     public $guaranty;
-    public function mount()
+    public function mount(): void
     {
         $this->categories = Category::query()
             ->whereNotNull('parent_id')
@@ -75,8 +77,13 @@ class ProductCreate extends Component
         $this->products_status = ProductStatus::cases();
     }
 
+    /**
+     * @throws Throwable
+     */
     public function createRow(): void
     {
+        $this->validate();
+
         $discount = faNumConvert($this->discount);
         $main_price = faNumConvert($this->main_price);
         if ($discount > 99) {
@@ -85,15 +92,18 @@ class ProductCreate extends Component
             ]);
         }
 
-        if ($this->image) {
-            $imageName = $this->image->hashName();
-            $this->image->storeAs('images/products', $imageName, 'public');
+        if ($this->primary_image) {
+            $imageName = $this->primary_image->hashName();
+            $this->primary_image->storeAs('images/products', $imageName, 'public');
         }
 
+
+        DB::beginTransaction();
         $product = Product::query()->create([
             'name' => $this->name,
             'e_name' => $this->e_name,
             'slug' => makeSlug($this->name, 'Product'),
+            'primary_image' => $imageName,
             'description' => Purifier::clean($this->description),
             'category_id' => $this->category_id,
             'brand_id' => $this->brand_id,
@@ -104,12 +114,13 @@ class ProductCreate extends Component
             'discount' => $discount,
             'count' => faNumConvert($this->count),
             'max_sell' => faNumConvert($this->max_sell),
-            'image' => $imageName,
             'status' => $this->status ?: ProductStatus::Active->value,
             'product_id' => $product->id,
             'color_id' => $this->color_id,
             'guaranty_id' => $this->guaranty_id,
         ]);
+
+        DB::commit();
 
         session()->flash('success', 'محصول با موفقیت ذخیره شد!');
         $this->redirectRoute('admin.product.list');

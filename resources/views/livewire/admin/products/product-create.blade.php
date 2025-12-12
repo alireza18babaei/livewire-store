@@ -14,7 +14,10 @@
   <form class="space-y-10">
     <div class="space-y-10">
 
-      <div x-data="{ preview: '' }" class="w-full flex justify-center items-center">
+      <div
+        x-data="{ preview: '' }"
+        class="w-full flex justify-center items-center">
+
         <label for="ctnFile" class="relative cursor-pointer w-[300px] h-[250px]" aria-label="انتخاب تصویر">
           <div x-show="!preview" class="absolute inset-0 flex items-center justify-center">
             <x-icons.image size="30" class="text-gray-400"/>
@@ -22,10 +25,10 @@
           <img :src="preview" width="300" height="250"
             class="border w-full h-full border-gray-300 rounded-md bg-contain"
             loading="lazy" decoding="async">
-          <input id="ctnFile" type="file" wire:model="image"
+          <input id="ctnFile" type="file" wire:model="primary_image"
             @change="preview = URL.createObjectURL($event.target.files[0])"
             class="sr-only">
-          @error('image') <p class="text-danger mt-1">{{ $message }}</p> @enderror
+          @error('primary_image') <p class="text-danger mt-1">{{ $message }}</p> @enderror
         </label>
       </div>
 

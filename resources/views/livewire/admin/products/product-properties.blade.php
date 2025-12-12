@@ -1,3 +1,4 @@
+@php use App\Models\ProductProperty; @endphp
 <div>
   <div class="panel min-h-scree">
 
@@ -21,7 +22,8 @@
 
             <div>
               <label for="category_attribute_select">دسته‌بندی ویژگی</label>
-              <select wire:model="category_attribute_id" id="category_attribute_select" class="form-select text-white-dark">
+              <select wire:model="category_attribute_id" id="category_attribute_select"
+                class="form-select text-white-dark">
                 <option selected>انتخاب کنید</option>
                 @foreach($categoriesAttributes as $key=>$value)
                   <option value="{{$key}}">{{$value}}</option>
@@ -40,11 +42,11 @@
           </div>
         </form>
         <div>
-{{--          <a href="{{ route('admin.categories.property.trashed.list', $this->product->id) }}"--}}
-{{--            class="btn btn-danger  flex items-end justify-center gap-2 w-[300px]">--}}
-{{--            <x-icons.trash/>--}}
-{{--            ویژگی ‌های حذف شده محصول--}}
-{{--          </a>--}}
+          {{--          <a href="{{ route('admin.categories.property.trashed.list', $this->product->id) }}"--}}
+          {{--            class="btn btn-danger  flex items-end justify-center gap-2 w-[300px]">--}}
+          {{--            <x-icons.trash/>--}}
+          {{--            ویژگی ‌های حذف شده محصول--}}
+          {{--          </a>--}}
         </div>
       </div>
     </div>
@@ -54,10 +56,9 @@
         <thead>
           <tr>
             <th>ردیف</th>
-            <th>عنوان ویژگی محصول</th>
-            <th>عنوان ویژگی دسته بندی</th>
+            <th>عنوان دسته بندی ویژگی</th>
+            <th>ویژگی محصول</th>
             <th>تاریخ ایجاد</th>
-            <th class="text-center">عملیات</th>
           </tr>
         </thead>
         <tbody>
@@ -65,29 +66,29 @@
             <tr>
               <td>{{ $loop->iteration }}</td>
 
-              <td class="whitespace-nowrap max-w-max"> {{ $property->name }} </td>
-
               <td class="whitespace-nowrap max-w-max">
                 {{ $property->categoryAttribute?->name }}
               </td>
 
-              <td class="whitespace-nowrap">{{ getJalaliDate($property->created_at) }}</td>
-              <td class="flex justify-center items-center gap-2">
-                @if($editIndex && $property->id == $editIndex)
-                  <label for="editBtn" class="cursor-pointer">
-                    <x-icons.check size="22" class="text-emerald-500 self-start"/>
-                  </label>
-                @else
-                  <button wire:click="editRow({{ $property->id }})" type="button" x-tooltip="آبدیت">
-                    <x-icons.edit/>
-                  </button>
-                @endif
-                <button wire:click.prevent="$dispatch('delete_property', { 'property_id' : {{ $property->id }} })"
-                  type="button" x-tooltip="حذف"
-                  class="text-red-500">
-                  <x-icons.delete/>
-                </button>
+              <td class="whitespace-nowrap max-w-max">
+                <ul class="space-y-2">
+                  @foreach(ProductProperty::query()
+                  ->where('category_attribute_id', $property->categoryAttribute->id)->get() as $property_category_attribute)
+                    <li class="flex justify-center gap-3">{{ $property_category_attribute->name }}
+                      <div class="border border-gray-200 px-1 rounded">
+                        <button
+                          wire:click.prevent="$dispatch('delete_property_category_attribute', { 'property_category_attribute_id' : {{ $property_category_attribute->id }} })"
+                          type="button" x-tooltip="حذف"
+                          class="text-red-500">
+                          <x-icons.delete/>
+                        </button>
+                        @endforeach
+                      </div>
+                    </li>
+                </ul>
               </td>
+
+              <td class="whitespace-nowrap">{{ getJalaliDate($property->created_at) }}</td>
             </tr>
           @endforeach
         </tbody>
@@ -103,7 +104,7 @@
 
 @script
 <script>
-    Livewire.on('delete_property', (event) => {
+    Livewire.on('delete_property_category_attribute', (event) => {
         Swal.fire({
             title: "آیا از حذف مطمئن هستید؟",
             icon: "warning",
@@ -114,7 +115,7 @@
             cancelButtonText: 'خیر',
         }).then((result) => {
             if (result.isConfirmed) {
-                Livewire.dispatch('destroy_property', {property_id: event.property_id})
+                Livewire.dispatch('destroy_property_category_attribute', {property_category_attribute_id: event.property_category_attribute_id})
                 Swal.fire({
                     title: "حذف انجام شد!",
                     icon: "success"

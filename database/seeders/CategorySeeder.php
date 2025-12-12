@@ -35,7 +35,7 @@ class CategorySeeder extends Seeder
                 ]);
                 for ($t = 1; $t <= $categoryAttribute; $t++) {
                     CategoryAttribute::query()->create([
-                        'name' => "ویژگی $t",
+                        'name' => "ویژگی $i-$j-$t",
                         'category_id' => $child->id,
                     ]);
                 }

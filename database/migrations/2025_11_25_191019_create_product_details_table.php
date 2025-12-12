@@ -24,11 +24,10 @@ return new class extends Migration
             $table->integer('max_sell')->default(0);
             $table->integer('viewed')->default(0);
             $table->integer('sold')->default(0)->index();
-            $table->string('image');
             $table->string('status')->default(ProductStatus::Active->value);
             $table->foreignIdFor(Product::class)->constrained()->onDelete('cascade');
-            $table->foreignIdFor(Color::class)->constrained();
-            $table->foreignIdFor(Guaranty::class)->constrained();
+            $table->foreignIdFor(Color::class)->nullable()->constrained();
+            $table->foreignIdFor(Guaranty::class)->nullable()->constrained();
             $table->softDeletes();
             $table->timestamps();
         });

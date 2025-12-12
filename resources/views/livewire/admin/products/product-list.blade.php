@@ -75,7 +75,7 @@
               <td class="whitespace-nowrap">{{ $product->mainDetails->count }}</td>
               <td class="whitespace-nowrap">{{ $product->mainDetails->max_sell }}</td>
               <td class="whitespace-nowrap w-[80px] flex items-center justify-center">
-                <img src="{{ asset('images/products/' . $product->mainDetails->image) }}" alt="image"
+                <img src="{{ asset('images/products/' . $product->primary_image) }}" alt="image"
                   class="object-cover w-12 h-12 mb-5 rounded-full">
               </td>
 {{--              <td class="whitespace-nowrap">{!! clean($product->description) !!}</td>--}}

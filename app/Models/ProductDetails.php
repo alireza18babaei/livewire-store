@@ -21,7 +21,6 @@ class ProductDetails extends Model
         'viewed',
         'sold',
         'status',
-        'image',
         'product_id',
         'color_id',
         'guaranty_id',

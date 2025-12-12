@@ -12,7 +12,7 @@ class UserSeeder extends Seeder
     public function run(): void
     {
 
-        $count = 10;
+        $count = 2;
 
         $baseNames = [
             'علیرضا رضایی',

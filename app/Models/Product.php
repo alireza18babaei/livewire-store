@@ -20,6 +20,7 @@ class Product extends Model
         'e_name',
         'slug',
         'description',
+        'primary_image',
         'category_id',
         'brand_id',
         'status'

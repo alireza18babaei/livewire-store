@@ -7,6 +7,7 @@ use App\Enums\ProductStatus;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -35,6 +36,7 @@ class ProductEdit extends Component
 
     public $category_id;
 
+    public $primary_image;
     public $brand_id;
 
     public Product $product;
@@ -68,7 +70,17 @@ class ProductEdit extends Component
             'name' => 'required|string|unique:products,name,' . $this->product->id,
             'e_name' => 'required|string|unique:products,e_name,' . $this->product->id,
             'description' => 'required|string',
+            'primary_image' => 'nullable|image|mimes:jpeg,jpg,png',
         ]);
+
+
+
+        if ($this->primary_image) {
+            $imageName = $this->primary_image->hashName();
+            $this->primary_image->storeAs('images/products', $imageName, 'public');
+        }
+
+        DB::beginTransaction();
 
         Product::query()->find($this->product->id)->update([
             'name' => $this->name,
@@ -76,9 +88,11 @@ class ProductEdit extends Component
             'slug' => makeSlug($this->name, 'Product'),
             'description' => Purifier::clean($this->description),
             'status' => $this->status ?: $this->product->status,
+            'primary_image' => $this->primary_image ? $imageName : $this->product->primary_image,
             'category_id' => $this->category_id,
             'brand_id' => $this->brand_id,
         ]);
+        DB::commit();
 
         session()->flash('success', 'محصول با موفقیت بروزرسانی شد!');
         $this->redirectRoute('admin.product.list');
