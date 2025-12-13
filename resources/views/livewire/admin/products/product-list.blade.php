@@ -59,6 +59,7 @@
             <th>دسته‌بندی</th>
             <th>برند</th>
             <th>تنوع قیمت</th>
+            <th>عکس‌ها</th>
             <th>ویژگی‌ها</th>
             <th>تاریخ ایجاد</th>
             <th class="text-center">عملیات</th>
@@ -90,6 +91,9 @@
               <td class="whitespace-nowrap {{ $product->brand?->name ?: 'text-danger' }}">{{ $product->brand?->name ?: 'حذف شده' }}</td>
               <td class="whitespace-nowrap">
                 <a href="{{ route('admin.product.details', $product->id) }}" class="btn btn-outline-info">تنوع قیمت</a>
+              </td>
+              <td class="whitespace-nowrap">
+                <a href="{{ route('admin.product.images', $product->id) }}" class="btn btn-outline-success">عکس‌ها</a>
               </td>
               <td class="whitespace-nowrap">
                 <a href="{{ route('admin.product.properties', $product->id) }}" class="btn btn-outline-secondary">ویژگی محصول</a>

@@ -123,25 +123,27 @@
         </div>
         <div>
 
-        <div>
-          <label for="status">وضعیت</label>
-          <select wire:model="status" id="status" class="form-select text-white-dark">
-            @foreach($products_status as $status)
-              <option value="{{ $status->value }}">{{ __("enums.$status->value") }}</option>
-            @endforeach
-          </select>
-          @error('status') <p class="text-danger mt-1">{{ $message }}</p> @enderror
+          <div>
+            <label for="status">وضعیت</label>
+            <select wire:model="status" id="status" class="form-select text-white-dark">
+              @foreach($products_status as $status)
+                <option value="{{ $status->value }}">{{ __("enums.$status->value") }}</option>
+              @endforeach
+            </select>
+            @error('status') <p class="text-danger mt-1">{{ $message }}</p> @enderror
+          </div>
         </div>
-      </div>
-      <div wire:ignore>
-        <label for="description">توضیحات محصول</label>
-        <textarea wire:model="description" id="editor" type="text"
-          class="form-input resize-none border border-gray-300 h-40"></textarea>
-        @error('description') <p class="text-danger mt-1">{{ $message }}</p> @enderror
-      </div>
 
-      <div>
-        <button wire:click.prevent="createRow" class="btn btn-success !mt-6">تایید</button>
+        <div wire:ignore>
+          <label for="description">توضیحات محصول</label>
+          <textarea wire:model="description" id="editor" type="text"
+            class="form-input resize-none border border-gray-300 h-40"></textarea>
+          @error('description') <p class="text-danger mt-1">{{ $message }}</p> @enderror
+        </div>
+
+        <div>
+          <button wire:click.prevent="createRow" class="btn btn-success !mt-6">تایید</button>
+        </div>
       </div>
     </div>
   </form>
