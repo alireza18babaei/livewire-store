@@ -11,6 +11,8 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Spatie\Permission\Models\Role;
+use function session;
 
 class UserList extends Component
 {
@@ -30,6 +32,15 @@ class UserList extends Component
 
     public $editIndex;
     public $search;
+    public $roles;
+    public $selected_user;
+    public $selected_role;
+
+    public function mount(): void
+    {
+        $this->roles = Role::query()->pluck('name')->toArray();
+    }
+
     public function createRow(): void
     {
         $this->validate();
@@ -75,10 +86,21 @@ class UserList extends Component
         $this->reset();
     }
 
+    public function setSelectUser($user_id)
+    {
+        $this->selected_user = User::query()->findOrFail($user_id);
+        $this->selected_role = $this->selected_user->roles()->pluck('name');
+    }
+
+    public function saveUserRole()
+    {
+        $this->selected_user->syncRoles($this->selected_role);
+        session()->flash('success', 'نقش برای کاربر با موفقیت تنظیم شد!');
+    }
     #[computed]
     public function users(): PaginatorAlias
     {
-        return User::query()->select('id', 'name', 'email', 'phone')->paginate(10);
+        return User::query()->with('roles')->select('id', 'name', 'email', 'phone')->paginate(10);
     }
 
     public function searchData()

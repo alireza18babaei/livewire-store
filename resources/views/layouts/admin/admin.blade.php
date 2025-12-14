@@ -53,14 +53,14 @@
 
   <div class="min-h-screen text-black main-container dark:text-white-dark"
     :class="[$store.app.navbar]">
-
-    @include('layouts.admin.sidebar')
-
-    @include('layouts.admin.header')
-
     <div class="p-6 animate__animated"
       :class="[$store.app.animation]">
       <div x-data>
+
+        @include('layouts.admin.sidebar')
+
+        @include('layouts.admin.header')
+
         <div x-data>
           <ol class="flex space-x-2 rtl:space-x-reverse mb-4">
             <li>
@@ -82,6 +82,7 @@
         {{ $slot }}
       </div>
     </div>
+
   </div>
   {{--
   <script src="{{ asset('panel/js/alpine-collaspe.min.js') }}"></script>--}}

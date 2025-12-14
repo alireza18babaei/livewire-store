@@ -56,6 +56,20 @@
             </li>
 
             <li>
+              <a href="{{ route('admin.roles.list') }}"
+                class="{{ request()->is('admin/roles*') ? 'active' : '' }}">
+                نقش‌ها
+              </a>
+            </li>
+
+            <li>
+              <a href="{{ route('admin.permissions.list') }}"
+                class="{{ request()->is('admin/permissions*') ? 'active' : '' }}">
+                مجوز‌ها
+              </a>
+            </li>
+
+            <li>
               <a href="{{ route('admin.categories.list') }}"
                 class="{{ request()->is('admin/categories*') ? 'active' : '' }}">
                 دسته‌بندی‌ها
