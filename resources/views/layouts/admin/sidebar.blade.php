@@ -4,7 +4,7 @@
     class="sidebar fixed top-0 bottom-0 z-50 h-full min-h-screen w-[260px] shadow-[5px_0_25px_0_rgba(94,92,154,0.1)] transition-all duration-300">
     <div class="h-full bg-white dark:bg-[#0e1726]">
       <div class="flex items-center justify-between px-4 py-3">
-        <a href="index.html"
+        <a href="{{route('home')}}"
           class="flex items-center main-logo shrink-0">
           <img class="ml-[5px] w-8 flex-none"
             src="{{ asset('panel/images/logo.png') }}"
@@ -27,7 +27,7 @@
             :class="{'active' : activeDropdown === 'dashboard'}"
             @click="activeDropdown === 'dashboard' ? activeDropdown = null : activeDropdown = 'dashboard'">
             <div class="flex items-center">
-              <x-icons.home/>
+              <x-icons.dashboard/>
               <span
                 class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">داشبورد</span>
             </div>
@@ -47,13 +47,70 @@
                 داشبورد
               </a>
             </li>
+          </ul>
+        </li>
 
+        <li class="menu nav-item">
+          <button type="button"
+            class="nav-link group"
+            :class="{'active' : activeDropdown === 'users'}"
+            @click="activeDropdown === 'users' ? activeDropdown = null : activeDropdown = 'users'">
+            <div class="flex items-center">
+              <x-icons.user2 size="20"/>
+              <span
+                class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">کاربران</span>
+            </div>
+            <div class="rtl:rotate-180"
+              :class="{'!rotate-90' : activeDropdown === 'users'}">
+              <x-icons.arrow/>
+            </div>
+          </button>
+          <ul x-cloak
+            x-show="activeDropdown === 'users'"
+            x-collapse
+            class="text-gray-500 sub-menu">
             <li>
               <a href="{{ route('admin.users.list') }}"
                 class="{{ request()->is('admin/users*') ? 'active' : '' }}">
                 کاربران
               </a>
             </li>
+
+            <li>
+              <a href="{{ route('admin.roles.list') }}"
+                class="{{ request()->is('admin/roles*') ? 'active' : '' }}">
+                نقش‌ها
+              </a>
+            </li>
+
+            <li>
+              <a href="{{ route('admin.permissions.list') }}"
+                class="{{ request()->is('admin/permissions*') ? 'active' : '' }}">
+                مجوز‌ها
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="menu nav-item">
+          <button type="button"
+            class="nav-link group"
+            :class="{'active' : activeDropdown === 'shop'}"
+            @click="activeDropdown === 'shop' ? activeDropdown = null : activeDropdown = 'shop'">
+            <div class="flex items-center">
+              <x-icons.store size="20"/>
+              <span
+                class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">فروشگاه</span>
+            </div>
+            <div class="rtl:rotate-180"
+              :class="{'!rotate-90' : activeDropdown === 'shop'}">
+              <x-icons.arrow/>
+            </div>
+          </button>
+          <ul x-cloak
+            x-show="activeDropdown === 'shop'"
+            x-collapse
+            class="text-gray-500 sub-menu">
 
             <li>
               <a href="{{ route('admin.categories.list') }}"

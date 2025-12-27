@@ -1,4 +1,4 @@
-<div class="panel">
+<div class="panel" x-data="modal">
 
   {{--    message--}}
   <x-admin.message/>
@@ -52,7 +52,9 @@
         <span class="absolute inset-y-0 right-2 grid w-8 place-content-center">
           <button type="submit" aria-label="Submit"
             class="rounded-full p-1.5 text-gray-700 transition-colors hover:bg-gray-100">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"></path></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor" class="size-4"><path stroke-linecap="round" stroke-linejoin="round"
+                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"></path></svg>
           </button>
         </span>
       </div>
@@ -66,6 +68,8 @@
             <th>نام و نام‌خانوادگی</th>
             <th>ایمیل</th>
             <th>مبایل</th>
+            <th>نقش‌ها</th>
+            <th>انتصاب نقش‌ها</th>
             <th class="text-center">عملیات</th>
           </tr>
         </thead>
@@ -76,6 +80,18 @@
               <td class="whitespace-nowrap">{{ $user->name }}</td>
               <td class="whitespace-nowrap">{{ $user->email ?? '-' }}</td>
               <td class="whitespace-nowrap">{{ $user->phone ?? '-' }}</td>
+
+              <td>
+                @foreach($user->roles->pluck('name') as $permissionName)
+                  <p
+                    class="px-2 py-1 rounded border border-gray-300 bg-gray-100 text-center text-xs text-gray-700">{{ $permissionName }}</p>
+                @endforeach
+              </td>
+
+              <td class="whitespace-nowrap flex justify-center">
+                <button type="button" class="btn btn-info" wire:click="setSelectUser({{ $user->id }})" @click="toggle">لیست نقش‌ها</button>
+              </td>
+
               <td class="border-b border-[#ebedf2] p-3 text-center dark:border-[#191e3a]">
                 <button wire:click="editRow({{ $user->id }})" type="button" x-tooltip="Edit">
                   <x-icons.edit/>
@@ -92,4 +108,47 @@
       {{ $this->users->links('layouts.admin.pagination') }}
     </ul>
   </div>
+
+  <div class="fixed inset-0 bg-[black]/60 z-[999] hidden overflow-y-auto" :class="open && '!block'">
+    <div class="flex items-center justify-center min-h-screen px-4" @click.self="open = false">
+      <div x-show="open" x-transition x-transition.duration.300  x-trap="open" class="panel border-0 p-0 rounded-lg overflow-hidden w-full max-w-lg my-8">
+        <div class="p-5">
+          <h5 class="font-bold text-lg m-4">لیست مجوزها</h5>
+          <div class="dark:text-white-dark/70 text-base font-medium text-[#1f2937]">
+            <p wire:loading >درحال دریافت اطلاعات...</p>
+            <div wire:loading.remove class="p-5">
+              @foreach($this->roles as $role)
+                <label for="{{'role' . $loop->iteration}}" class="p-1">
+                  <input wire:model="selected_role" value="{{ $role }}"
+                    type="radio"
+                    id="{{'role' . $loop->iteration}}"
+                    class="form-radio peer"/>
+                  <span>{{ $role }}</span>
+                </label>
+              @endforeach
+            </div>
+          </div>
+          <div class="flex justify-end items-center mt-8">
+            <button type="button" class="btn btn-outline-danger" @click="toggle">انصراف</button>
+            <button type="button" class="btn btn-primary ltr:ml-4 rtl:mr-4" wire:click="saveUserRole()" @click="toggle">ذخیره</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
+
+@script
+<script>
+    document.addEventListener("alpine:init", () => {
+        Alpine.data("modal", (initialOpenState = false) => ({
+            open: initialOpenState,
+
+            toggle() {
+                this.open = !this.open;
+            },
+        }));
+    });
+</script>
+@endscript

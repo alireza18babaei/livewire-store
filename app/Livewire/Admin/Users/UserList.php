@@ -11,6 +11,8 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Spatie\Permission\Models\Role;
+use function session;
 
 class UserList extends Component
 {
@@ -30,25 +32,36 @@ class UserList extends Component
 
     public $editIndex;
     public $search;
+    public $roles;
+    public $selected_user;
+    public $selected_role;
+
+    public function mount(): void
+    {
+        $this->roles = Role::query()->pluck('name')->toArray();
+    }
+
     public function createRow(): void
     {
         $this->validate();
 
-        User::query()->create([
+        $user = User::query()->create([
             'name' => $this->name,
             'email' => $this->email,
             'phone' => $this->phone,
             'password' => Hash::make($this->password),
         ]);
 
+        $user->assignRole('کاربر عادی');
+
         session()->flash('success', 'کاربر جدید با موفقیت اضافه شد.');
-        $this->reset();
+        $this->reset(['name', 'email', 'phone', 'password']);
     }
 
     public function editRow($id)
     {
         $this->editIndex = $id;
-        $user= User::query()->findOrFail($id);
+        $user = User::query()->findOrFail($id);
         $this->name = $user->name;
         $this->phone = $user->phone;
         $this->email = $user->email;
@@ -57,11 +70,11 @@ class UserList extends Component
     public function updateRow()
     {
         $this->validate([
-                'name' => 'required|string|min:6',
-                'phone' => 'required|max:13|min:11|string|unique:users,phone|persian_numeric,' . $this->editIndex,
-                'email' => 'required|string|email|unique:users,email,' . $this->editIndex,
-                'password' => 'nullable|string|min:6|persian_numeric'
-            ]);
+            'name' => 'required|string|min:6',
+            'phone' => 'required|max:13|min:11|string|unique:users,phone|persian_numeric,' . $this->editIndex,
+            'email' => 'required|string|email|unique:users,email,' . $this->editIndex,
+            'password' => 'nullable|string|min:6|persian_numeric'
+        ]);
 
         $user = User::query()->findOrFail($this->editIndex);
         $user->update([
@@ -75,10 +88,22 @@ class UserList extends Component
         $this->reset();
     }
 
+    public function setSelectUser($user_id)
+    {
+        $this->selected_user = User::query()->findOrFail($user_id);
+        $this->selected_role = $this->selected_user->roles()->pluck('name')->first();
+    }
+
+    public function saveUserRole()
+    {
+        $this->selected_user->syncRoles($this->selected_role);
+        session()->flash('success', 'نقش برای کاربر با موفقیت تنظیم شد!');
+    }
+
     #[computed]
     public function users(): PaginatorAlias
     {
-        return User::query()->select('id', 'name', 'email', 'phone')->paginate(10);
+        return User::query()->with('roles')->select('id', 'name', 'email', 'phone')->latest()->paginate(10);
     }
 
     public function searchData()
@@ -94,12 +119,12 @@ class UserList extends Component
 
     #[Layout('layouts.admin.admin', [
 
-            'title' => 'لیست کاربران',
-            'breadcrumb' =>
-                [
-                    ['label' => 'لیست کاربران']
-                ]
-        ])]
+        'title' => 'لیست کاربران',
+        'breadcrumb' =>
+            [
+                ['label' => 'لیست کاربران']
+            ]
+    ])]
     public function render(): View
     {
         return view('livewire.admin.users.user-list');

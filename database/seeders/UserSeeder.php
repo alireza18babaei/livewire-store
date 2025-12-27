@@ -30,13 +30,16 @@ class UserSeeder extends Seeder
             foreach ($baseNames as $fullName) {
                 $numberedName = $fullName . $i;
 
-                User::create([
+                $user = User::create([
                     'name' => $numberedName,
                     'email' => Str::slug($numberedName) . '@example.com',
                     'phone' => '09' . random_int(100000000, 999999999),
                     'password' => Hash::make('123123123'),
                     'is_admin' => false,
                 ]);
+
+                $user->assignRole('کاربر عادی');
+
             }
         }
     }
