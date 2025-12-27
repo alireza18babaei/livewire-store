@@ -16,6 +16,8 @@ class RolePermissionSeeder extends Seeder
 
 
         $permissions = [
+            'دسترسی به پنل ادمین',
+
             'دسترسی به کاربران',
             'ایجاد کاربر',
             'ویرایش کاربران',
@@ -34,9 +36,10 @@ class RolePermissionSeeder extends Seeder
         }
 
         // define permissions
-        $owner = Role::firstOrCreate(['name' => 'صاحب فروشگاه']);
-        $manager = Role::firstOrCreate(['name' => 'مدیر فروشگاه']);
-        $admin = Role::firstOrCreate(['name' => 'اذمین']);
+        $member = Role::firstOrCreate(['name' => 'کاربر عادی']);
+        $owner = Role::firstOrCreate(['name' => 'مالک']);
+        $manager = Role::firstOrCreate(['name' => 'مدیر']);
+        $admin = Role::firstOrCreate(['name' => 'ادمین']);
 
 
 
@@ -46,6 +49,7 @@ class RolePermissionSeeder extends Seeder
             Permission::whereNotIn('name', ['دسترسی به تمام نقش کاربران'])->pluck('name')
         );
         $admin->givePermissionTo([
+            'دسترسی به پنل ادمین',
             'ایجاد',
             'ویرایش',
             'حذف',

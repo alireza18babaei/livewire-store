@@ -82,12 +82,10 @@
               <td class="whitespace-nowrap">{{ $user->phone ?? '-' }}</td>
 
               <td>
-                <div class="grid grid-cols-3 gap-2">
-                  @foreach($user->roles->pluck('name') as $permissionName)
-                    <span
-                      class="py-1 rounded border border-gray-300 bg-gray-100 text-center text-xs text-gray-700">{{ $permissionName }}</span>
-                  @endforeach
-                </div>
+                @foreach($user->roles->pluck('name') as $permissionName)
+                  <p
+                    class="px-2 py-1 rounded border border-gray-300 bg-gray-100 text-center text-xs text-gray-700">{{ $permissionName }}</p>
+                @endforeach
               </td>
 
               <td class="whitespace-nowrap flex justify-center">
@@ -122,9 +120,9 @@
               @foreach($this->roles as $role)
                 <label for="{{'role' . $loop->iteration}}" class="p-1">
                   <input wire:model="selected_role" value="{{ $role }}"
-                    type="checkbox"
+                    type="radio"
                     id="{{'role' . $loop->iteration}}"
-                    class="form-checkbox outline-primary rounded-full"/>
+                    class="form-radio peer"/>
                   <span>{{ $role }}</span>
                 </label>
               @endforeach

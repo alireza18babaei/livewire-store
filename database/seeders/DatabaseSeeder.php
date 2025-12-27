@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call(UserSeeder::class);
+
         $this->call(RolePermissionSeeder::class);
 
         $user = User::create([
@@ -25,9 +25,10 @@ class DatabaseSeeder extends Seeder
             'phone' => '09370675182',
             'password' => Hash::make('123123123'),
         ]);
-        $user->assignRole('صاحب فروشگاه');
+        $user->assignRole('مالک');
 
 
+        $this->call(UserSeeder::class);
         $this->call(CategorySeeder::class);
         $this->call(BrandSeeder::class);
         $this->call(ColorsSeeder::class);
