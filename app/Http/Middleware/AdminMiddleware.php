@@ -15,14 +15,22 @@ class AdminMiddleware
      *
      * @param \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response) $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next, $option = null): Response
     {
         $user = auth()->user();
-        
-        if ($user->can('دسترسی به پنل ادمین')) {
-            return $next($request);
+
+        if (!$user->adminPanelAccess()) {
+            abort(404);
         }
-        abort(404);
+
+        if ($option === "userAccess" && !$user->userAccess()) {
+            abort(404);
+        }
+
+
+
+        return $next($request);
+
 
     }
 }

@@ -32,11 +32,12 @@ Route::prefix('admin')->middleware(['admin'])->group(callback: function () {
         Route::get('/', Panel::class)->name('panel');
 
 //    users
-        Route::get('/users', UserList::class)->name('admin.users.list');
+        Route::prefix('users')->middleware('admin:userAccess')->group(function () {
+            Route::get('/', UserList::class)->name('admin.users.list');
 
-//    roles & permissions
-        Route::get('/roles', RoleList::class)->name('admin.roles.list');
-        Route::get('/permissions', PermissionList::class)->name('admin.permissions.list');
+            //    roles & permissions
+            Route::get('/roles', RoleList::class)->name('admin.roles.list');
+        });
 
 
 //    categories

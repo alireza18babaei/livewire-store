@@ -50,47 +50,42 @@
           </ul>
         </li>
 
-        <li class="menu nav-item">
-          <button type="button"
-            class="nav-link group"
-            :class="{'active' : activeDropdown === 'users'}"
-            @click="activeDropdown === 'users' ? activeDropdown = null : activeDropdown = 'users'">
-            <div class="flex items-center">
-              <x-icons.user2 size="20"/>
-              <span
-                class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">کاربران</span>
-            </div>
-            <div class="rtl:rotate-180"
-              :class="{'!rotate-90' : activeDropdown === 'users'}">
-              <x-icons.arrow/>
-            </div>
-          </button>
-          <ul x-cloak
-            x-show="activeDropdown === 'users'"
-            x-collapse
-            class="text-gray-500 sub-menu">
-            <li>
-              <a href="{{ route('admin.users.list') }}"
-                class="{{ request()->is('admin/users*') ? 'active' : '' }}">
-                کاربران
-              </a>
-            </li>
+        @if(auth()->user()->userAccess())
+          <li class="menu nav-item">
+            <button type="button"
+              class="nav-link group"
+              :class="{'active' : activeDropdown === 'users'}"
+              @click="activeDropdown === 'users' ? activeDropdown = null : activeDropdown = 'users'">
+              <div class="flex items-center">
+                <x-icons.user2 size="20"/>
+                <span
+                  class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">کاربران</span>
+              </div>
+              <div class="rtl:rotate-180"
+                :class="{'!rotate-90' : activeDropdown === 'users'}">
+                <x-icons.arrow/>
+              </div>
+            </button>
+            <ul x-cloak
+              x-show="activeDropdown === 'users'"
+              x-collapse
+              class="text-gray-500 sub-menu">
+              <li>
+                <a href="{{ route('admin.users.list') }}"
+                  class="{{ request()->is('admin/users*') ? 'active' : '' }}">
+                  کاربران
+                </a>
+              </li>
 
-            <li>
-              <a href="{{ route('admin.roles.list') }}"
-                class="{{ request()->is('admin/roles*') ? 'active' : '' }}">
-                نقش‌ها
-              </a>
-            </li>
-
-            <li>
-              <a href="{{ route('admin.permissions.list') }}"
-                class="{{ request()->is('admin/permissions*') ? 'active' : '' }}">
-                مجوز‌ها
-              </a>
-            </li>
-          </ul>
-        </li>
+              <li>
+                <a href="{{ route('admin.roles.list') }}"
+                  class="{{ request()->is('admin/roles*') ? 'active' : '' }}">
+                  نقش‌ها
+                </a>
+              </li>
+            </ul>
+          </li>
+        @endif
 
         <li class="menu nav-item">
           <button type="button"
